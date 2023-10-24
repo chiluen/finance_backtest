@@ -6,8 +6,13 @@ from crawler.base_crawler import BaseCrawler
 import yfinance as yf
 import pandas as pd
 import os
+from utils.logger import get_logger
 
 class USStockCrawler(BaseCrawler):
+    
+    def __init__(self):
+        super().__init__()
+        self.logger = get_logger(__name__)
     
     def start_crawl(self, stock, start, end, interval="1d"):
         
@@ -17,7 +22,7 @@ class USStockCrawler(BaseCrawler):
         
         #check the cache
         if os.path.exists(path):
-            print('data exist') # should be replace by logger
+            self.logger.info("Data exist")
             data = pd.read_csv(path)
             return data
 
