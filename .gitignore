@@ -1,1 +1,4 @@
 __pycache__/
+
+data_storage/*
+!data_storage/keep

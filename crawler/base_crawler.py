@@ -11,7 +11,7 @@ class BaseCrawler():
         """Set the basic setting for different crawler"""
         pass
     
-    def start_crawl(self):
+    def start_crawl(self, target, start, end, interval):
         """Start to run the crawl"""
         pass
         
