@@ -2,18 +2,17 @@
 us stock crawler
 """
 
-from crawler.base_crawler import BaseCrawler
+from dataset.base_crawler import BaseCrawler
 import yfinance as yf
 import pandas as pd
 import os
-from utils.logger import get_logger
 from overrides import override
 
 class USStockCrawler(BaseCrawler):
     
     def __init__(self):
         super().__init__()
-        self.logger = get_logger(__name__)
+        self.category = 'stock'
     
     @override
     def start_crawl(self, target, start, end, interval="1d"):
@@ -26,11 +25,11 @@ class USStockCrawler(BaseCrawler):
         
         start_parse = ''.join(start.split('-'))
         end_parse = ''.join(end.split('-'))
-        path = f'{self.data_store_path}/{target}-{start_parse}-{end_parse}'
+        path = f'{self.data_store_path}/{self.category}-{target}-{start_parse}-{end_parse}'
         
         #check the cache
         if os.path.exists(path):
-            self.logger.info("Data exist")
+            self.logger.info(f'Data exist, load the data from {self.data_store_path}')
             data = pd.read_csv(path)
             return data
 
