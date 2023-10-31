@@ -26,6 +26,10 @@ class BaseDataset():
         """Get the data, and prepare data in df format"""
         pass
     
+    def _set_target(self):
+        """Set the train/test target for the dataset"""
+        pass
+    
     def train_test_split(self, window_size):
         """Split the train test data"""
         pass

@@ -4,7 +4,6 @@ Linear regression model
 
 from model.base_model import BaseModel
 from overrides import override
-import yaml
 from sklearn.linear_model import LinearRegression
 
 class LinearRegressionModel(BaseModel):

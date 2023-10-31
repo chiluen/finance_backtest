@@ -35,6 +35,5 @@ class USStockCrawler(BaseCrawler):
 
         #download the data
         data = yf.download(tickers=target, start=start, end=end, interval=interval)
-        data['target'] = data['Close']
         data.to_csv(path)
         return data

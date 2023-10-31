@@ -20,6 +20,11 @@ class USStockDataset(BaseDataset):
     @override
     def prepare_data(self, target, start, end, interval="1d"):
         self._data = self._crawler.start_crawl(target, start, end, interval)
+        self._set_target()
+        
+    @override
+    def _set_target(self):
+        self._data['target'] = self._data['Close']
         
     @override
     def train_test_split(self, window_size=3):
@@ -38,7 +43,7 @@ class USStockDataset(BaseDataset):
             test_start_index += 1
 
         self.logger.info(f'Window size is {window_size}')
-        self.logger.info('Complete the train and test split')
+        self.logger.info(f'Complete the train and test split, the length of them is {len(self._train_split_index)}')
     
     @override
     def get_train_split(self, index):
@@ -46,9 +51,4 @@ class USStockDataset(BaseDataset):
     
     @override
     def get_test_split(self, index):
-        return self._data.iloc[[self._test_split_index[index]],:]
-        
-        
-        
-    
-        
+        return self._data.iloc[[self._test_split_index[index]],:] 
