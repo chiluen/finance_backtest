@@ -11,13 +11,11 @@ class BasePipeline():
         self.model = model
         self.logger = get_logger(__name__)
         
-    def _set_model_dataset(self):
-        """set for the dataset and model"""
-        
     def run(self):
         """run train and test, show the result"""
         pass
     
-    def plot(self):
-        """plot for the outcome"""
+    def prepare_data(self, index):
+        """Get the dataset by index"""
         pass
+    

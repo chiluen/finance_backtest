@@ -4,7 +4,9 @@ Pipeline for value prediction
 
 from pipeline.base_pipeline import BasePipeline
 from overrides import override
-from sklearn.metrics import mean_squared_error
+from utils.metric import mean_square_error
+from utils.plot import plot_line
+from tqdm import tqdm
 
 class ValuePipeline(BasePipeline):
     
@@ -14,6 +16,7 @@ class ValuePipeline(BasePipeline):
     @override
     def run(self):
         #TODO: Need to think how to adapt the model to all circumstance(adding another protocal?)
+        #TODO: how to simulate buy and sell?
         
         #valid model and dataset
         if self.dataset.get_train_test_length() == 0:
@@ -23,25 +26,18 @@ class ValuePipeline(BasePipeline):
         value_list = []
         ans_list = []
         
-        #todo: 是不是要加上一個進度條？
-        for i in range(self.dataset.get_train_test_length()):
-            #是不是把data弄成 train_data永遠都是從index=0到index=現在？
-            #todo: 還需要針對資料做清理，要寫成額外一個function（）
-            # train_data = self.dataset.get_train_split(i)
-            # train_data_X = train_data.drop('target', axis=1)
-            # train_data_Y = train_data['target']
-            # test_data = self.dataset.get_test_split(i)
-            # test_data_X = test_data.drop('target', axis=1)
-            # test_data_Y = test_data['target']
+        for i in tqdm(range(self.dataset.get_train_test_length()), desc ="Train/Evalue process"):
             train_data_X, train_data_Y, test_data_X, test_data_Y = self.prepare_data(i)
             
             self.model.train(train_data_X, train_data_Y)
             result = self.model.evaluate(test_data_X)
-            value_list.append(result)
-            ans_list.append(test_data_Y)
-        #還需要一個evaluate function，現在先用一個MSE好了
-        print(mean_squared_error(value_list, ans_list))
+            value_list.append(result.item())
+            ans_list.append(test_data_Y.item())
+        
+        self.logger.info('MSE foe this strategy: {}'.format(mean_square_error(value_list, ans_list)))
+        plot_line(value_list, ans_list)
     
+    @override
     def prepare_data(self, index):
         """return and postprocess data"""
         train_data = self.dataset.get_train_split(index)

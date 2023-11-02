@@ -1,3 +1,7 @@
+"""
+General logger setting
+"""
+
 import logging
 
 def get_logger(name):
