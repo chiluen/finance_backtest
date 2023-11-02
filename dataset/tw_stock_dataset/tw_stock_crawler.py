@@ -8,12 +8,12 @@ import pandas as pd
 import os
 from overrides import override
 
-class USStockCrawler(BaseCrawler):
+class TWStockCrawler(BaseCrawler):
     
     def __init__(self):
         super().__init__()
         self.category = 'stock'
-        self.region = 'US'
+        self.region = 'TW'
     
     @override
     def start_crawl(self, target, start, end, interval="1d"):
@@ -35,6 +35,9 @@ class USStockCrawler(BaseCrawler):
             return data
 
         #download the data
+        if 'TW' not in target:
+            self.logger.error(f'Please specify TW at the end of the stock number. Example: \'0050.TW\'')        
+            raise RuntimeError
         data = yf.download(tickers=target, start=start, end=end, interval=interval)
         data.to_csv(path)
         return data

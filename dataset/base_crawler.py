@@ -9,6 +9,8 @@ class BaseCrawler():
     def __init__(self):
         self.data_store_path = './data_storage'
         self.logger = get_logger(__name__)
+        self.category = None
+        self.region = None
     
     def set_environment(self):
         """Set the basic setting for different crawler"""
